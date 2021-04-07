@@ -160,21 +160,46 @@ function scoreboard(cb1, cb2, numOfInnings) {
   let singleInning;
   // create variable for the result string
   let singleInningResult;
+  // create variables for final scores
+  let homeFinal = 0;
+  let awayFinal = 0;
+  // array to collect scores for processing into final scores later
+  let allScores = [];
   // loop for numOfInnings
   for(let i = 0; i < numOfInnings; i++){
+    // use singleInning to call getInningScore, pass inning as arg
     singleInning = cb1(cb2);
+    // assign home variable
     let home = singleInning.Home;
+    // assign away variable
     let away = singleInning.Away;
+    // create variable to hold string
     singleInningResult = `Inning ${i + 1}: Away ${away} - Home ${home}`;
-    allInnings.push(singleInningResult);  
-
+    // push single innings to allScores for processing final
+    allScores.push(singleInning);
+    // push string to new allInnings array
+    allInnings.push(singleInningResult); 
   }
-  // for( let i = 0; i < allInnings.length; i++){
-  //   // allInnings[i].Home
-  // }
-
+  // reduce to add home scores per inning
+  homeFinal = allScores.reduce((acc, score) => acc + score["Home"], 0);
+  // reduce to add away scores per inning
+  awayFinal = allScores.reduce((acc, score) => acc + score["Away"], 0);
+  // string to display if a tie
+  let tie = `This game will require extra Innings: Away ${awayFinal} - Home ${homeFinal}`;
+  // string to display if not a tie
+  let noTie = `Final Score: Away ${awayFinal} - Home ${homeFinal}`;
+  // find out if there's a tie
+  if(homeFinal !== awayFinal){
+    // push noTie string to allInnings array if there's no tie
+    allInnings.push(noTie);
+  }else{
+    // push tie string to allInnings array if there is a tie
+    allInnings.push(tie);
+  }
+  // return the allInnings array
   return allInnings;
 }
+
 
 console.log(scoreboard(getInningScore, inning, 9));
 
