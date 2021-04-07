@@ -153,9 +153,30 @@ Use the scoreboard function below to do the following:
 ]  
   */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(cb1, cb2, numOfInnings) {
+  // create the array to be returned
+  let allInnings = [];
+  // create variable to hold getInningScore(inning())
+  let singleInning;
+  // create variable for the result string
+  let singleInningResult;
+  // loop for numOfInnings
+  for(let i = 0; i < numOfInnings; i++){
+    singleInning = cb1(cb2);
+    let home = singleInning.Home;
+    let away = singleInning.Away;
+    singleInningResult = `Inning ${i + 1}: Away ${away} - Home ${home}`;
+    allInnings.push(singleInningResult);  
+
+  }
+  // for( let i = 0; i < allInnings.length; i++){
+  //   // allInnings[i].Home
+  // }
+
+  return allInnings;
 }
+
+console.log(scoreboard(getInningScore, inning, 9));
 
 
 
